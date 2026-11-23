@@ -195,7 +195,9 @@ void Simulador::imprimirResumo() const {
     const Estatisticas& e = estat_;
     double taxa = (e.acessos > 0) ? 100.0 * e.acertos / e.acessos : 0.0;  // traco vazio
 
-    std::cout << "\n";
+    if (!config_.apenasResumo) {
+        std::cout << "\n";
+    }
     std::cout << "acessos ............. " << e.acessos << "\n";
     std::cout << "acertos ............. " << e.acertos << "\n";
     std::cout << "faltas .............. " << e.faltas
