@@ -97,19 +97,20 @@ Os arquivos esperados não devem ser alterados.
 
 ```
 python3 scripts/experimentos.py            # roda todos
-python3 scripts/experimentos.py E1 E3      # roda só os indicados (E1..E6, DESAFIO)
+python3 scripts/experimentos.py E1 E3      # roda só os indicados (E1..E6, Desafio)
 ```
 
-Antes de rodar, o script executa a calibração e só continua se os quatro testes
-estiverem OK. Para cada configuração ele grava em `resultados/` a saída completa
-(por acesso), usada nas justificativas do relatório, e imprime as tabelas no
-formato pedido na atividade, que também ficam em `resultados/tabelas.txt`.
+O script compila o simulador e, para cada configuração, grava em
+`resultados/<experimento>/` a saída completa (por acesso), usada nas justificativas
+do relatório, e imprime as tabelas no formato pedido na atividade. Quando roda
+todos os experimentos, as tabelas também são salvas em `resultados/tabelas.md`.
+Recomenda-se rodar a calibração antes (`python3 scripts/calibrar.py`).
 
 Traços esperados em `experimentos/`: `E1_varredura.txt`, `E2_registros.txt`,
 `E3_dois_vetores.txt`, `E5_laco_80.txt`, `E5_laco_60.txt`, `E6_acumulador.txt`,
 `E6_copia.txt`, `E6_esparsa.txt`. Os traços de autoria do grupo são
-`Desafio_traco.txt` e `E3_dois_vetores_modificado.txt`. Traços ausentes são
-apenas avisados e pulados.
+`desafio.txt` e `E3_modificado.txt`. Traços ausentes são apenas avisados e
+pulados.
 
 | Experimento | Configuração |
 |---|---|
