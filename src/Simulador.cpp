@@ -69,6 +69,7 @@ ResultadoAcesso Simulador::processarAcesso(const Acesso& acesso) {
         estat_.acertos++;
     } else {
         // Falta: classifica e traz o bloco para a via escolhida.
+        estat_.faltas++;
         uint32_t enderecoBloco = cache_.montarEnderecoBloco(r.rotulo, r.indice);
         r.tipoFalta = classificarFalta(enderecoBloco, acertariaTotalmenteAssoc);
 
@@ -81,6 +82,7 @@ ResultadoAcesso Simulador::processarAcesso(const Acesso& acesso) {
             r.houveWriteback = b.sujo;
             if (b.sujo) {
                 estat_.writebacks++;
+                estat_.bytesEscritos += config_.tamanhoBloco;  // bloco inteiro
             }
         }
 
@@ -88,6 +90,7 @@ ResultadoAcesso Simulador::processarAcesso(const Acesso& acesso) {
         b.sujo = false;
         b.rotulo = r.rotulo;
         estat_.blocosLidos++;
+        estat_.bytesLidos += config_.tamanhoBloco;
     }
 
     cache_.atualizarUso(r.indice, via);
@@ -98,6 +101,7 @@ ResultadoAcesso Simulador::processarAcesso(const Acesso& acesso) {
             cache_.bloco(r.indice, via).sujo = true;
         } else {
             estat_.escritasWriteThrough++;
+            estat_.bytesEscritos += 4;  // 1 palavra por escrita
         }
     }
 
@@ -107,8 +111,6 @@ ResultadoAcesso Simulador::processarAcesso(const Acesso& acesso) {
 // Compulsoria: primeira vez que o bloco aparece no traco.
 // Conflito: a totalmente associativa acertaria. Capacidade: ela tambem faltaria.
 TipoFalta Simulador::classificarFalta(uint32_t enderecoBloco, bool acertariaTotalmenteAssoc) {
-    estat_.faltas++;
-
     bool primeiraVez = blocosJaVistos_.insert(enderecoBloco).second;
     if (primeiraVez) {
         estat_.faltasCompulsorias++;
@@ -141,17 +143,16 @@ bool Simulador::acessarTotalmenteAssociativa(uint32_t endereco) {
 
 // No fim do traco (WB), os blocos ainda sujos sao gravados na memoria.
 void Simulador::descargaFinal() {
-    if (config_.politica == Politica::WriteBack) {
-        for (uint32_t i = 0; i < cache_.numeroConjuntos(); i++) {
-            for (uint32_t v = 0; v < cache_.numeroVias(); v++) {
-                if (cache_.bloco(i, v).valido && cache_.bloco(i, v).sujo) {
-                    estat_.descargaFinal++;
-                }
+    if (config_.politica != Politica::WriteBack) {
+        return;
+    }
+    for (uint32_t i = 0; i < cache_.numeroConjuntos(); i++) {
+        for (uint32_t v = 0; v < cache_.numeroVias(); v++) {
+            if (cache_.bloco(i, v).valido && cache_.bloco(i, v).sujo) {
+                estat_.descargaFinal++;
+                estat_.bytesEscritos += config_.tamanhoBloco;
             }
         }
-        estat_.bytesEscritos = (estat_.writebacks + estat_.descargaFinal) * config_.tamanhoBloco;
-    } else {
-        estat_.bytesEscritos = estat_.escritasWriteThrough * 4;  // 1 palavra por escrita
     }
 }
 
@@ -206,7 +207,7 @@ void Simulador::imprimirResumo() const {
               << ", capacidade " << e.faltasCapacidade << ")\n";
     std::cout << "taxa de acerto ...... " << std::fixed << std::setprecision(2) << taxa << "%\n";
     std::cout << "blocos lidos da mem.  " << e.blocosLidos
-              << "  (" << e.blocosLidos * config_.tamanhoBloco << " B)\n";
+              << "  (" << e.bytesLidos << " B)\n";
 
     if (config_.politica == Politica::WriteBack) {
         std::cout << "escritas na memoria  " << e.writebacks + e.descargaFinal
