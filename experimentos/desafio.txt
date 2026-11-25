@@ -1,0 +1,39 @@
+# Desafio - capacidade 256 B, bloco 16 B
+# 4 blocos separados por 512 B (multiplo de 256 B), todos no conjunto 3
+# com 1, 2 e 4 vias. Acessados em ciclo A, B, C, D, 8 voltas.
+#   1 via : 1 bloco por indice        -> cada acesso expulsa o anterior  -> 0%
+#   2 vias: 2 vias para 4 blocos      -> LRU expulsa sempre o proximo    -> 0%
+#   4 vias: os 4 blocos cabem juntos  -> so as 4 faltas compulsorias     -> 87,5%
+# 32 acessos
+R 0x10000030
+R 0x10000230
+R 0x10000430
+R 0x10000630
+R 0x10000030
+R 0x10000230
+R 0x10000430
+R 0x10000630
+R 0x10000030
+R 0x10000230
+R 0x10000430
+R 0x10000630
+R 0x10000030
+R 0x10000230
+R 0x10000430
+R 0x10000630
+R 0x10000030
+R 0x10000230
+R 0x10000430
+R 0x10000630
+R 0x10000030
+R 0x10000230
+R 0x10000430
+R 0x10000630
+R 0x10000030
+R 0x10000230
+R 0x10000430
+R 0x10000630
+R 0x10000030
+R 0x10000230
+R 0x10000430
+R 0x10000630

@@ -30,6 +30,13 @@ Traco: E3_dois_vetores.txt
 | 4 | 48 | 75.00% | 16 | 0 | 0 |
 | 16 | 48 | 75.00% | 16 | 0 | 0 |
 
+## E3 - Traco modificado (1 via)
+Traco: E3_modificado.txt
+
+| Vias | Acertos | Taxa de acerto | Compuls. | Conflito | Capac. |
+|---|---|---|---|---|---|
+| 1 | 48 | 75.00% | 16 | 0 | 0 |
+
 ## E4 - Associatividade numa varredura
 Traco: E1_varredura.txt
 
@@ -83,4 +90,13 @@ Traco: E6_esparsa.txt
 |---|---|---|---|---|---|---|---|---|
 | WT | 0 | 0.00% | 32 | 0 | 0 | 32 | 128 | 512 |
 | WB | 0 | 0.00% | 32 | 0 | 0 | 32 | 512 | 512 |
+
+## Desafio
+Traco: desafio.txt
+
+| Vias | Acertos | Taxa de acerto | Compuls. | Conflito | Capac. |
+|---|---|---|---|---|---|
+| 1 | 0 | 0.00% | 4 | 28 | 0 |
+| 2 | 0 | 0.00% | 4 | 28 | 0 |
+| 4 | 28 | 87.50% | 4 | 0 | 0 |
 
